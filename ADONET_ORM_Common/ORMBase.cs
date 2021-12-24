@@ -143,8 +143,8 @@ namespace ADONET_ORM_Common
                     }
                     else if (item.PropertyType.Name.Contains("String"))
                     {
-                        //Suç ve Ceza
-                        values += $"'{item.GetValue(Entity)}',";
+                        //'Suç ve Ceza',
+                        values += $"'{item.GetValue(Entity).ToString().Replace("'","''")}',";
                     }
 
                     else
@@ -243,7 +243,7 @@ namespace ADONET_ORM_Common
                 else if (item.PropertyType.Name.Contains("String") || item.PropertyType.Name.Contains("Char"))
                 {
                     //Örn : KitapAd = 'Suç ve Ceza',
-                    sets += $"{item.Name}='{item.GetValue(Entity)}',";
+                    sets += $"{item.Name}='{item.GetValue(Entity).ToString().Replace("'","''")}',";
                 }
 
                 else

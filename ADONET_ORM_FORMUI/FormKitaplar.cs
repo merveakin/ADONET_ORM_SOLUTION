@@ -35,6 +35,49 @@ namespace ADONET_ORM_FORMUI
             TumKitaplariSilComboyaGetir();
             TumKitaplariGuncelleComboyaGetir();
 
+            //combobox'ların içine yazı yazılamasın. Bunun için comboboxların style'larını düzenleyeceğiz.
+            //1. YÖNTEM : Tek tek comboların name'lerinden ilgili property'yi düzenleriz.
+            comboBoxKitapGuncelle.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            //2 YÖNTEM : foreach döngüsüyle form kontrolleri taranarak combo bulursa bulduğu nesnenin ilgili property'sini düzenleyeceğiz.
+            foreach (var item in this.Controls)
+            {
+                if (item is TabControl)
+                {
+                    foreach (var subitem in ((TabControl)item).Controls)
+                    {
+                        if (subitem is TabPage)
+                        {
+                            foreach (var subofsubitem in ((TabPage)subitem).Controls)
+                            {
+                                //if (subofsubitem is ComboBox)
+                                //{
+                                //    ((ComboBox)subofsubitem).DropDownStyle = ComboBoxStyle.DropDownList;
+                                //}
+                                //Eğer yukarıdaki gibi "is" kullanmak istemezsek GetType metodu ile gelen Type'ı kontrol edebiliriz.
+                                if (subofsubitem.GetType()==typeof(ComboBox))
+                                {
+                                    ((ComboBox)subofsubitem).DropDownStyle = ComboBoxStyle.DropDownList;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Yukarıdaki foreach'e göre daha kısa yöntem
+            //TabControl----> TabPage
+
+            for (int i = 0; i < this.Controls[0].Controls.Count; i++)
+            {
+                for (int k = 0; k < this.Controls[0].Controls[i].Controls.Count; k++)
+                {
+                    if (this.Controls[0].Controls[i].Controls[k] is ComboBox)
+                    {
+                        ((ComboBox)this.Controls[0].Controls[i].Controls[k]).DropDownStyle = ComboBoxStyle.DropDownList;
+                    }
+                }
+            }
         }
 
         private void TumKitaplariGuncelleComboyaGetir()
@@ -144,7 +187,7 @@ namespace ADONET_ORM_FORMUI
                     TumKitaplariGrideViewModelleGetir();
                     //temizlik
                     EkleSayfasiKontrolleriTemizle();
-                    
+
                     //combobox güncelle ve combobox sil içine buradan yeni eklenen kitaplar da gelmelidir.
 
                     TumKitaplariGuncelleComboyaGetir();
@@ -291,7 +334,7 @@ namespace ADONET_ORM_FORMUI
         {
             txt_GuncelleKitapAdi.Text = string.Empty;
             numericUpDown_Guncelle_SayfaSayisi.Value = 0;
-            numericUpDown_Guncelle_Stok.Value =0;
+            numericUpDown_Guncelle_Stok.Value = 0;
             cmbBox_Guncelle_Tur.SelectedIndex = -1;
             cmbBox_Guncelle_Yazar.SelectedIndex = -1;
             cmbBox_Guncelle_Yazar.SelectedIndex = -1;
@@ -358,7 +401,7 @@ namespace ADONET_ORM_FORMUI
 
                         case false:
                             throw new Exception($"HATA : {secilenKitap.KitapAd} güncellenirken bir hata oluştu!");
-                            
+
                     }
 
                 }
@@ -415,7 +458,7 @@ namespace ADONET_ORM_FORMUI
             GuncelleSayfasiTemizle();
             SilmeSayfasiKontrolleriTemizle();
 
-            
+
         }
     }
 }
